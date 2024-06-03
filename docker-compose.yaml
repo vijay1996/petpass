@@ -38,11 +38,12 @@ services:
     tty: true
 
   client:
-    build: ./petpass-client
+    build:
+      context: ./petpass-client
     restart: on-failure
     env_file:
       - ./petpass-client/.env
     ports:
-      - "3000:3000"
+      - "3000:80"
 volumes:
   db:
