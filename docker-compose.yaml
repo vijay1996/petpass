@@ -1,10 +1,5 @@
 version: '3.3'
 services:
-  redis:
-    image: "redis:alpine"
-    ports:
-      - "6379:6379"
-
   db:
     image: "postgres"
     restart: unless-stopped
@@ -19,9 +14,8 @@ services:
     volumes:
       - db:/var/lib/postgres
 
-  app:
+  service:
     depends_on:
-      - redis
       - db
     build: ./petpass-service
     restart: on-failure
@@ -35,12 +29,20 @@ services:
               "spring.datasource.username" : "$DB_USER",
               "spring.datasource.password" : "$DB_PASSWORD",
               "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.PostgreSQLDialect",
-              "spring.jpa.hibernate.ddl-auto" : "update",
+              "spring.jpa.hibernate.ddl-auto" : "create",
               "spring.session.jdbc.initialize-schema":"always"
             }'
     volumes:
       - .m2:/root/.m2
     stdin_open: true
     tty: true
+
+  client:
+    build: ./petpass-client
+    restart: on-failure
+    env_file:
+      - ./petpass-client/.env
+    ports:
+      - "3000:3000"
 volumes:
   db:
