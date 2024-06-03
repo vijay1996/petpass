@@ -1,3 +1,6 @@
 [submodule "petpass-service"]
 	path = petpass-service
 	url = https://github.com/vijay1996/petpass-service.git
+[submodule "petpass-client"]
+	path = petpass-client
+	url = https://github.com/vijay1996/petpass-client.git
